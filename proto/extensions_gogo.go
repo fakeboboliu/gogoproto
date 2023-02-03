@@ -354,10 +354,7 @@ func GetUnsafeExtension(pb Message, fieldNum int32) (interface{}, error) {
 
 func NewUnsafeXXX_InternalExtensions(m map[int32]Extension) XXX_InternalExtensions {
 	x := &XXX_InternalExtensions{
-		p: new(struct {
-			mu           sync.Mutex
-			extensionMap map[int32]Extension
-		}),
+		p: new(extItem),
 	}
 	x.p.extensionMap = m
 	return *x

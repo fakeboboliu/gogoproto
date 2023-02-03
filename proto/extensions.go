@@ -134,19 +134,18 @@ type XXX_InternalExtensions struct {
 	// The mutex serializes all logically read-only operations to p.extensionMap.
 	// It is up to the client to ensure that write operations to p.extensionMap are
 	// mutually exclusive with other accesses.
-	p *struct {
-		mu           sync.Mutex
-		extensionMap map[int32]Extension
-	}
+	p *extItem
+}
+
+type extItem struct {
+	mu           sync.Mutex
+	extensionMap map[int32]Extension
 }
 
 // extensionsWrite returns the extension map, creating it on first use.
 func (e *XXX_InternalExtensions) extensionsWrite() map[int32]Extension {
 	if e.p == nil {
-		e.p = new(struct {
-			mu           sync.Mutex
-			extensionMap map[int32]Extension
-		})
+		e.p = new(extItem)
 		e.p.extensionMap = make(map[int32]Extension)
 	}
 	return e.p.extensionMap
